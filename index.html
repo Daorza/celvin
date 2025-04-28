@@ -3,38 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celvin - Konersi Celcius & Kelvin</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>Celvin - Konversi Suhu</title>
     <style>
-        .main{
+        .main {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
         }
-        .content{
+        .content {
             text-align: center;
             background-color: gray;
-            padding: 100px;
-            border-radius: 30px;
+            padding: 50px;
+            border-radius: 20px;
+            width: 300px;
+        }
+        select, input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 90%;
+        }
+        #inputSection {
+            display: none; /* Sembunyi dulu, muncul setelah pilih menu */
         }
     </style>
 </head>
 <body>
     <div class="main">
         <div class="content">
-            <h1>Konversi Celcius ke Kelvin</h1>
-            <div style="display: flex;">
-                <h2>Celcius</h2>
-                <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius">
-                <h2>Kelvin</h2>
-                <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius"><br>
+            <h1>Konversi Suhu</h1>
+
+            <select id="menuSelect">
+                <option value="">-- Pilih Menu --</option>
+                <option value="1">1. Celcius ke Kelvin</option>
+                <option value="2">2. Kelvin ke Celcius</option>
+            </select>
+
+            <div id="inputSection">
+                <input type="number" id="suhuInput" placeholder="Masukkan suhu">
+                <button id="convertBtn">Konversi</button>
             </div>
-            
-            <button id="convertBtn">Konversi</button>
+
             <p id="result"></p>
         </div>
     </div>
+
+    <script>
+        const menuSelect = document.getElementById('menuSelect');
+        const inputSection = document.getElementById('inputSection');
+        const convertBtn = document.getElementById('convertBtn');
+
+        let selectedMenu = "";
+
+        menuSelect.addEventListener('change', function() {
+            selectedMenu = this.value;
+            if (selectedMenu) {
+                inputSection.style.display = 'block'; // Munculkan input suhu
+            } else {
+                inputSection.style.display = 'none';
+                document.getElementById('result').innerText = "";
+            }
+        });
+
+        convertBtn.addEventListener('click', function() {
+            const suhu = document.getElementById('suhuInput').value;
+            if (suhu === '') {
+                alert('Masukkan suhu terlebih dahulu.');
+                return;
+            }
+
+            let hasil = "";
+
+            if (selectedMenu === '1') {
+                // Celcius ke Kelvin
+                const kelvin = parseFloat(suhu) + 273.15;
+                hasil = `${suhu}°C = ${kelvin}K`;
+            } else if (selectedMenu === '2') {
+                // Kelvin ke Celcius
+                const celcius = parseFloat(suhu) - 273.15;
+                hasil = `${suhu}K = ${celcius}°C`;
+            } else {
+                hasil = "Menu tidak valid.";
+            }
+
+            document.getElementById('result').innerText = hasil;
+        });
+    </script>
 </body>
 </html>
