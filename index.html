@@ -6,13 +6,35 @@
     <title>Celvin - Konersi Celcius & Kelvin</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <style>
+        .main{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .content{
+            text-align: center;
+            background-color: gray;
+            padding: 100px;
+            border-radius: 30px;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h1>Konversi Celcius ke Kelvin</h1>
-        <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius">
-        <button id="convertBtn">Konversi</button>
-        <p id="result"></p>
+    <div class="main">
+        <div class="content">
+            <h1>Konversi Celcius ke Kelvin</h1>
+            <div style="display: flex;">
+                <h2>Celcius</h2>
+                <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius">
+                <h2>Kelvin</h2>
+                <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius"><br>
+            </div>
+            
+            <button id="convertBtn">Konversi</button>
+            <p id="result"></p>
+        </div>
     </div>
 </body>
 </html>
