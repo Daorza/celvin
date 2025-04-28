@@ -3,16 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celvin - Konersi Celcius & Kelvin</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>Celvin - Konversi Suhu</title>
+    <style>
+        .main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .content {
+            text-align: center;
+            background-color: gray;
+            padding: 50px;
+            border-radius: 20px;
+            width: 300px;
+        }
+        select, input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 90%;
+        }
+        #inputSection {
+            display: none; /* Sembunyi dulu, muncul setelah pilih menu */
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h1>Konversi Celcius ke Kelvin</h1>
-        <input type="number" id="celcius" placeholder="Masukkan suhu dalam Celcius">
-        <button id="convertBtn">Konversi</button>
-        <p id="result"></p>
+    <div class="main">
+        <div class="content">
+            <h1>Konversi Suhu</h1>
+
+            <select id="menuSelect">
+                <option value="">-- Pilih Menu --</option>
+                <option value="1">Celcius ke Kelvin</option>
+                <option value="2">Kelvin ke Celcius</option>
+            </select>
+
+            <div id="inputSection">
+                <input type="number" id="suhuInput" placeholder="Masukkan suhu">
+                <button id="convertBtn">Konversi</button>
+            </div>
+
+            <p id="result"></p>
+        </div>
     </div>
 </body>
 </html>
