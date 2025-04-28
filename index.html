@@ -24,22 +24,24 @@
             font-size: 16px;
             width: 90%;
         }
-        #inputSection {
-            display: none; /* Sembunyi dulu, muncul setelah pilih menu */
-        }
+        /* #inputSection {
+            display: none;
+        } */
     </style>
 </head>
 <body>
     <div class="main">
         <div class="content">
+            <h2>Celcius</h2>
             <h1>Konversi Suhu</h1>
-
+            
             <select id="menuSelect">
-                <option value="">-- Pilih Menu --</option>
+                <input type="radio" name="value" value="1">
+                <input type="radio" name="value" value="2">
+<!-- 
                 <option value="1">1. Celcius ke Kelvin</option>
-                <option value="2">2. Kelvin ke Celcius</option>
+                <option value="2">2. Kelvin ke Celcius</option> -->
             </select>
-
             <div id="inputSection">
                 <input type="number" id="suhuInput" placeholder="Masukkan suhu">
                 <button id="convertBtn">Konversi</button>
