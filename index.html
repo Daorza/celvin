@@ -1,278 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Konversi Suhu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Konversi Suhu - Flip Card</title>
   <style>
-    /* Reset */
-    * {
+    body {
+      font-family: sans-serif;
+      background: #16181d;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card-container {
+      width: 320px;
+      height: 400px;
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background-color: #23272f;
+      border-radius: 20px;
+      color: #58c4dc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       box-sizing: border-box;
     }
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 40px;
-      transition: background-color 0.5s;
-    }
-
-    /* Dark mode otomatis */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #1e1e1e;
-        color: #f0f0f0;
-      }
-      .main {
-        background-color: #2c2c2c;
-        border-color: #444;
-      }
-    }
-
-    .main {
-      max-width: 400px;
-      margin: auto;
-      padding: 20px;
-      background: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s ease-out forwards;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .back {
+      background-color: #23272f;
+      transform: rotateY(180deg);
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 20px;
-      color: #2c3e50;
     }
 
-    select, input, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
       font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+      width: 90%;
+      border-radius: 15px;
+      border: 3px solid transparent;
+      transition: transform 0.3s ease-in-out;
     }
-
-    select:focus, input:focus {
-      border-color: #3498db;
-      box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
-      outline: none;
+    button{
+        background-color: #1f222a;
+        color: whitesmoke;
     }
-
-    button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-      transform: scale(1.03);
-    }
-
-    button:active {
-      background-color: #2471a3;
-      transform: scale(0.97);
-    }
-
-    button:focus {
-      outline: 2px solid #85c1e9;
-      outline-offset: 2px;
-    }
-
-    #inputSection {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
-    }
-
-    #inputSection.show {
-      max-height: 250px;
-    }
-
-    .input-group {
-      position: relative;
-      margin-top: 20px;
-    }
-
-    .input-group label {
-      position: absolute;
-      left: 12px;
-      top: 12px;
-      color: #888;
-      font-size: 16px;
-      pointer-events: none;
-      transition: 0.3s ease all;
-    }
-
-    .input-group input:focus + label,
-    .input-group input:not(:placeholder-shown) + label {
-      top: -8px;
-      left: 10px;
-      font-size: 12px;
-      color: #3498db;
-      background: #fff;
-      padding: 0 4px;
+    button:hover{
+        border: 3px solid #58c4dc;
     }
 
     #result {
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
-      opacity: 0;
-      transform: scale(0.9);
-      transition: opacity 0.4s, transform 0.4s;
-    }
-
-    #result.show {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-top: 8px;
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 20px;
-      }
+      font-size: 22px;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
 
-  <div class="main">
-    <div class="content">
-      <h1>Konversi Suhu</h1>
+  <div class="card-container">
+    <div class="card" id="flipCard">
 
-      <select id="menuSelect" aria-label="Pilih Menu">
-        <option value="">-- Pilih Menu --</option>
-        <option value="1">1. Celcius ke Kelvin</option>
-        <option value="2">2. Kelvin ke Celcius</option>
-      </select>
-
-      <div id="inputSection">
-        <div class="input-group">
-          <input type="number" id="suhuInput" placeholder=" " aria-label="Masukkan suhu">
-          <label for="suhuInput">Masukkan Suhu</label>
-        </div>
-        <button id="convertBtn">Konversi</button>
-        <p class="error" id="errorMsg"></p>
+      <!-- Sisi Depan -->
+      <div class="card-face front">
+        <h1 id="modeTitle">Celcius ke Kelvin</h1>
+        <input type="number" id="suhuInput" placeholder="Masukkan suhu dalam Celcius">
+        <button onclick="convert()">Konversi</button>
+        <button onclick="toggleMode()">Balik</button>
       </div>
 
-      <p id="result"></p>
+      <!-- Sisi Belakang -->
+      <div class="card-face back">
+        <h1>Hasil Konversi</h1>
+        <p id="result"></p>
+        <button onclick="goBack()">Kembali</button>
+      </div>
+
     </div>
   </div>
 
   <script>
-    const menuSelect = document.getElementById('menuSelect');
-    const inputSection = document.getElementById('inputSection');
-    const convertBtn = document.getElementById('convertBtn');
+    let mode = "CtoK"; // Default: Celcius ke Kelvin
     const suhuInput = document.getElementById('suhuInput');
     const result = document.getElementById('result');
-    const errorMsg = document.getElementById('errorMsg');
+    const flipCard = document.getElementById('flipCard');
+    const modeTitle = document.getElementById('modeTitle');
 
-    let selectedMenu = "";
-
-    menuSelect.addEventListener('change', function () {
-      selectedMenu = this.value;
-
-      if (selectedMenu) {
-        inputSection.classList.add('show');
-        suhuInput.value = '';
-        result.innerText = '';
-        errorMsg.innerText = '';
-        result.classList.remove('show');
+    function toggleMode() {
+      if (mode === "CtoK") {
+        mode = "KtoC";
+        modeTitle.innerText = "Kelvin ke Celcius";
+        suhuInput.placeholder = "Masukkan suhu dalam Kelvin";
       } else {
-        inputSection.classList.remove('show');
-        suhuInput.value = '';
-        errorMsg.innerText = '';
-        result.innerText = '';
-        result.classList.remove('show');
+        mode = "CtoK";
+        modeTitle.innerText = "Celcius ke Kelvin";
+        suhuInput.placeholder = "Masukkan suhu dalam Celcius";
       }
-    });
-
-    function validateInput(suhu) {
-      if (selectedMenu === '1' && suhu < -273.15) {
-        return "Suhu Celcius tidak boleh di bawah -273.15°C";
-      }
-      if (selectedMenu === '2' && suhu < 0) {
-        return "Suhu Kelvin tidak boleh negatif";
-      }
-      return "";
+      suhuInput.value = "";
+      result.innerText = "";
     }
 
-    function showResult(hasil) {
-      result.classList.remove('show');
-      void result.offsetWidth;
+    function convert() {
+      const value = parseFloat(suhuInput.value);
+      if (isNaN(value)) {
+        alert("Masukkan angka yang valid!");
+        return;
+      }
+
+      let hasil = "";
+      if (mode === "CtoK") {
+        hasil = `${value}°C = ${(value + 273.15).toFixed(2)}K`;
+      } else {
+        hasil = `${value}K = ${(value - 273.15).toFixed(2)}°C`;
+      }
+
       result.innerText = hasil;
-      result.classList.add('show');
+      flipCard.classList.add("flipped");
     }
 
-    convertBtn.addEventListener('click', function () {
-      const suhu = parseFloat(suhuInput.value);
-
-      if (isNaN(suhuInput.value) || suhuInput.value === '') {
-        alert('Masukkan suhu terlebih dahulu.');
-        return;
-      }
-
-      const error = validateInput(suhu);
-      if (error) {
-        errorMsg.innerText = error;
-        result.innerText = '';
-        result.classList.remove('show');
-        return;
-      } else {
-        errorMsg.innerText = '';
-      }
-
-      convertBtn.disabled = true;
-      convertBtn.innerText = "Mengonversi...";
-
-      setTimeout(() => {
-        let hasil = "";
-
-        if (selectedMenu === '1') {
-          const kelvin = suhu + 273.15;
-          hasil = `${suhu}°C = ${kelvin.toFixed(2)} K`;
-        } else if (selectedMenu === '2') {
-          const celcius = suhu - 273.15;
-          hasil = `${suhu} K = ${celcius.toFixed(2)}°C`;
-        } else {
-          hasil = "Menu tidak valid.";
-        }
-
-        showResult(hasil);
-
-        convertBtn.disabled = false;
-        convertBtn.innerText = "Konversi";
-      }, 500);
-    });
-
-    suhuInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        convertBtn.click();
-      }
-    });
+    function goBack() {
+      flipCard.classList.remove("flipped");
+    }
   </script>
 
 </body>
