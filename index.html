@@ -1,52 +1,279 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celvin - Konversi Suhu</title>
-    <style>
-        .main {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        .content {
-            text-align: center;
-            background-color: gray;
-            padding: 50px;
-            border-radius: 20px;
-            width: 300px;
-        }
-        select, input, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            width: 90%;
-        }
-        #inputSection {
-            display: none; /* Sembunyi dulu, muncul setelah pilih menu */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Konversi Suhu</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 40px;
+      transition: background-color 0.5s;
+    }
+
+    /* Dark mode otomatis */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1e1e1e;
+        color: #f0f0f0;
+      }
+      .main {
+        background-color: #2c2c2c;
+        border-color: #444;
+      }
+    }
+
+    .main {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+
+    select:focus, input:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
+      outline: none;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+      transform: scale(1.03);
+    }
+
+    button:active {
+      background-color: #2471a3;
+      transform: scale(0.97);
+    }
+
+    button:focus {
+      outline: 2px solid #85c1e9;
+      outline-offset: 2px;
+    }
+
+    #inputSection {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    #inputSection.show {
+      max-height: 250px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .input-group label {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      color: #888;
+      font-size: 16px;
+      pointer-events: none;
+      transition: 0.3s ease all;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -8px;
+      left: 10px;
+      font-size: 12px;
+      color: #3498db;
+      background: #fff;
+      padding: 0 4px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+
+    #result.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="main">
-        <div class="content">
-            <h1>Konversi Suhu</h1>
 
-            <select id="menuSelect">
-                <option value="">-- Pilih Menu --</option>
-                <option value="1">Celcius ke Kelvin</option>
-                <option value="2">Kelvin ke Celcius</option>
-            </select>
+  <div class="main">
+    <div class="content">
+      <h1>Konversi Suhu</h1>
 
-            <div id="inputSection">
-                <input type="number" id="suhuInput" placeholder="Masukkan suhu">
-                <button id="convertBtn">Konversi</button>
-            </div>
+      <select id="menuSelect" aria-label="Pilih Menu">
+        <option value="">-- Pilih Menu --</option>
+        <option value="1">1. Celcius ke Kelvin</option>
+        <option value="2">2. Kelvin ke Celcius</option>
+      </select>
 
-            <p id="result"></p>
+      <div id="inputSection">
+        <div class="input-group">
+          <input type="number" id="suhuInput" placeholder=" " aria-label="Masukkan suhu">
+          <label for="suhuInput">Masukkan Suhu</label>
         </div>
+        <button id="convertBtn">Konversi</button>
+        <p class="error" id="errorMsg"></p>
+      </div>
+
+      <p id="result"></p>
     </div>
+  </div>
+
+  <script>
+    const menuSelect = document.getElementById('menuSelect');
+    const inputSection = document.getElementById('inputSection');
+    const convertBtn = document.getElementById('convertBtn');
+    const suhuInput = document.getElementById('suhuInput');
+    const result = document.getElementById('result');
+    const errorMsg = document.getElementById('errorMsg');
+
+    let selectedMenu = "";
+
+    menuSelect.addEventListener('change', function () {
+      selectedMenu = this.value;
+
+      if (selectedMenu) {
+        inputSection.classList.add('show');
+        suhuInput.value = '';
+        result.innerText = '';
+        errorMsg.innerText = '';
+        result.classList.remove('show');
+      } else {
+        inputSection.classList.remove('show');
+        suhuInput.value = '';
+        errorMsg.innerText = '';
+        result.innerText = '';
+        result.classList.remove('show');
+      }
+    });
+
+    function validateInput(suhu) {
+      if (selectedMenu === '1' && suhu < -273.15) {
+        return "Suhu Celcius tidak boleh di bawah -273.15°C";
+      }
+      if (selectedMenu === '2' && suhu < 0) {
+        return "Suhu Kelvin tidak boleh negatif";
+      }
+      return "";
+    }
+
+    function showResult(hasil) {
+      result.classList.remove('show');
+      void result.offsetWidth;
+      result.innerText = hasil;
+      result.classList.add('show');
+    }
+
+    convertBtn.addEventListener('click', function () {
+      const suhu = parseFloat(suhuInput.value);
+
+      if (isNaN(suhuInput.value) || suhuInput.value === '') {
+        alert('Masukkan suhu terlebih dahulu.');
+        return;
+      }
+
+      const error = validateInput(suhu);
+      if (error) {
+        errorMsg.innerText = error;
+        result.innerText = '';
+        result.classList.remove('show');
+        return;
+      } else {
+        errorMsg.innerText = '';
+      }
+
+      convertBtn.disabled = true;
+      convertBtn.innerText = "Mengonversi...";
+
+      setTimeout(() => {
+        let hasil = "";
+
+        if (selectedMenu === '1') {
+          const kelvin = suhu + 273.15;
+          hasil = `${suhu}°C = ${kelvin.toFixed(2)} K`;
+        } else if (selectedMenu === '2') {
+          const celcius = suhu - 273.15;
+          hasil = `${suhu} K = ${celcius.toFixed(2)}°C`;
+        } else {
+          hasil = "Menu tidak valid.";
+        }
+
+        showResult(hasil);
+
+        convertBtn.disabled = false;
+        convertBtn.innerText = "Konversi";
+      }, 500);
+    });
+
+    suhuInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        convertBtn.click();
+      }
+    });
+  </script>
+
 </body>
 </html>
