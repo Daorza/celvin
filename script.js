@@ -1,46 +1,38 @@
-const menuSelect = document.getElementById('menuSelect');
-const inputSection = document.getElementById('inputSection');
-const convertBtn = document.getElementById('convertBtn');
-const result = document.getElementById('result');
 const suhuInput = document.getElementById('suhuInput');
+const result = document.getElementById('result');
+const flipCard = document.getElementById('flipCard');
+const modeTitle = document.getElementById('modeTitle');
 
-let selectedMenu = "";
+let mode = "CtoK"; // Default: Celcius ke Kelvin
 
-// Saat user memilih menu
-menuSelect.addEventListener('change', function() {
-    selectedMenu = this.value;
-    if (selectedMenu) {
-        inputSection.style.display = 'block'; // Munculkan input suhu
-        suhuInput.value = ''; // Kosongkan input suhu
-        result.innerText = ''; // Kosongkan hasil
-    } else {
-        inputSection.style.display = 'none';
-        suhuInput.value = '';
-        result.innerText = '';
-    }
-});
+function toggleMode() {
+  mode = mode === "CtoK" ? "KtoC" : "CtoK";
+  modeTitle.innerText = mode === "CtoK" ? "Celcius ke Kelvin" : "Kelvin ke Celcius";
+  suhuInput.placeholder = 'Masukkan suhu dalam ' + (mode === "CtoK" ? "Celcius" : "Kelvin");
+  suhuInput.value = "";
+  result.innerText = "";
+}
 
-// Saat user klik tombol Konversi
-convertBtn.addEventListener('click', function() {
-    const suhu = suhuInput.value;
-    if (suhu === '') {
-        alert('Masukkan suhu terlebih dahulu.');
-        return;
-    }
+function convert() {
+  const value = parseFloat(suhuInput.value);
+  if (isNaN(value)) {
+    alert("Masukkan angka yang valid!");
+    return;
+  }
 
-    let hasil = "";
+  if (mode === "KtoC" && value < 0) {
+    alert("Suhu Kelvin tidak boleh kurang dari 0!");
+    return;
+  }
 
-    if (selectedMenu === '1') {
-        // Celcius ke Kelvin
-        const kelvin = parseFloat(suhu) + 273.15;
-        hasil = `${suhu}°C = ${kelvin.toFixed(2)} K`;
-    } else if (selectedMenu === '2') {
-        // Kelvin ke Celcius
-        const celcius = parseFloat(suhu) - 273.15;
-        hasil = `${suhu} K = ${celcius.toFixed(2)}°C`;
-    } else {
-        hasil = "Menu tidak valid.";
-    }
+  const hasil = mode === "CtoK" 
+      ? `${value}°C = ${(value + 273.15).toFixed(2)}K`
+      : `${value}K = ${(value - 273.15).toFixed(2)}°C`;
 
-    result.innerText = hasil;
-});
+  result.innerText = hasil;
+  flipCard.classList.add("flipped");
+}
+
+function goBack() {
+  flipCard.classList.remove("flipped");
+}

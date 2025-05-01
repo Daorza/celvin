@@ -3,5 +3,169 @@
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    color: #252525;
 }
+
+body {
+    font-family: sans-serif;
+    background: #16181d;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    transition: background-color 0.5s;
+  }
+
+  .card-container {
+    width: 360px;
+    height: 440px;
+    perspective: 1000px;
+
+    border-radius: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fade 0.8s ease-out forwards;
+  }
+  
+    @keyframes fade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  .card {
+    width: 100%;
+    height: 100%;;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease-in-out;
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 1px solid #58c4dc;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px #58c4dc;
+  }
+
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: #23272f;
+    border-radius: 1rem;
+    color: #58c4dc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+  }
+
+  .back {
+    transform: rotateY(180deg);
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  input, button {
+    margin: 12px 0;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  input:focus {
+    border-color: #58c4dc;
+    box-shadow: 0 0 12px #58c4dc;
+    outline: none;
+  }
+
+  button{
+      background-color: #16181d;
+      color: whitesmoke;
+      border: none;
+      cursor: pointer;
+  }
+  
+  button:hover{
+    background-color: #58c4dc;
+    color: #23272f;
+    transform: scale(1.03);
+    box-shadow: 0 0 8px #58c4dc;
+  }
+
+  button:active{
+    background-color: #52b5cb;
+    transform: scale(0.97);
+  }
+
+  button:focus{
+    outline: 2px solid #58c4dc7c;
+    outline-offset: 2px;
+  }
+
+  button.tukar {
+    background: none;
+    border: none;
+    color: #58c4dc;
+    padding: 8px 36px;
+    margin-top: 12px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  button.tukar:hover {
+    color: #a4e6f3;
+    transform: none;
+    background: none;
+  }
+
+  button.tukar:focus {
+    transform: none;
+    border: none;
+  }
+
+  button.tukar:active {
+    transform: none;
+    border: none;
+  }
+  
+  #result {
+    font-size: 22px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  @media (max-width: 420px) {
+    .card-container {
+      width: 90%;
+    }
+
+    .card-face {
+      padding: 24px 16px;
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    input, button {
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    #result {
+      font-size: 18px;
+    }
+  }

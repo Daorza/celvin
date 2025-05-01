@@ -1,86 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Konversi Suhu - Flip Card</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #16181d;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .card-container {
-      width: 320px;
-      height: 400px;
-      perspective: 1000px;
-    }
-
-    .card {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
-    }
-
-    .card.flipped {
-      transform: rotateY(180deg);
-    }
-
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      background-color: #23272f;
-      border-radius: 20px;
-      color: #58c4dc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .back {
-      background-color: #23272f;
-      transform: rotateY(180deg);
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    input, button {
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 16px;
-      width: 90%;
-      border-radius: 15px;
-      border: 3px solid transparent;
-      transition: transform 0.3s ease-in-out;
-    }
-    button{
-        background-color: #1f222a;
-        color: whitesmoke;
-    }
-    button:hover{
-        border: 3px solid #58c4dc;
-    }
-
-    #result {
-      font-size: 22px;
-      margin: 20px 0;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celvin | Konversi Suhu Celsius & Kelvin</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="card-container">
@@ -91,7 +18,7 @@
         <h1 id="modeTitle">Celcius ke Kelvin</h1>
         <input type="number" id="suhuInput" placeholder="Masukkan suhu dalam Celcius">
         <button onclick="convert()">Konversi</button>
-        <button onclick="toggleMode()">Balik</button>
+        <button class="tukar" onclick="toggleMode()">Tukar antar satuan</button>
       </div>
 
       <!-- Sisi Belakang -->
@@ -104,49 +31,7 @@
     </div>
   </div>
 
-  <script>
-    let mode = "CtoK"; // Default: Celcius ke Kelvin
-    const suhuInput = document.getElementById('suhuInput');
-    const result = document.getElementById('result');
-    const flipCard = document.getElementById('flipCard');
-    const modeTitle = document.getElementById('modeTitle');
-
-    function toggleMode() {
-      if (mode === "CtoK") {
-        mode = "KtoC";
-        modeTitle.innerText = "Kelvin ke Celcius";
-        suhuInput.placeholder = "Masukkan suhu dalam Kelvin";
-      } else {
-        mode = "CtoK";
-        modeTitle.innerText = "Celcius ke Kelvin";
-        suhuInput.placeholder = "Masukkan suhu dalam Celcius";
-      }
-      suhuInput.value = "";
-      result.innerText = "";
-    }
-
-    function convert() {
-      const value = parseFloat(suhuInput.value);
-      if (isNaN(value)) {
-        alert("Masukkan angka yang valid!");
-        return;
-      }
-
-      let hasil = "";
-      if (mode === "CtoK") {
-        hasil = `${value}°C = ${(value + 273.15).toFixed(2)}K`;
-      } else {
-        hasil = `${value}K = ${(value - 273.15).toFixed(2)}°C`;
-      }
-
-      result.innerText = hasil;
-      flipCard.classList.add("flipped");
-    }
-
-    function goBack() {
-      flipCard.classList.remove("flipped");
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
+
 </html>
